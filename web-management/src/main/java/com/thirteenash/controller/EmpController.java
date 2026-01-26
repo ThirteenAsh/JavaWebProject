@@ -7,9 +7,7 @@ import com.thirteenash.pojo.Result;
 import com.thirteenash.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 //员工管理控制器
 @Slf4j
@@ -26,6 +24,17 @@ public class EmpController {
         // 调用服务层进行分页查询
         PageResult<Emp> pageResult = empService.page(empQueryParam);
         return Result.success(pageResult);
+    }
+
+    // 保存员工
+
+    @PostMapping
+    public Result save(@RequestBody Emp emp){
+
+        // 保存员工
+        log.info("新增员工：{}", emp);
+        empService.save(emp);
+        return Result.success();
     }
 
 }

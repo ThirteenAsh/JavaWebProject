@@ -2,20 +2,29 @@ package com.thirteenash.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.thirteenash.mapper.EmpExprMapper;
 import com.thirteenash.mapper.EmpMapper;
 import com.thirteenash.pojo.Emp;
+import com.thirteenash.pojo.EmpExpr;
 import com.thirteenash.pojo.EmpQueryParam;
 import com.thirteenash.pojo.PageResult;
 import com.thirteenash.service.EmpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class EmpServiceImpl implements EmpService {
 
+    @Autowired
+    private EmpMapper empMapper;
 
-    private final EmpMapper empMapper;
+    @Autowired
+    private EmpExprMapper empExprMapper;
 
     public EmpServiceImpl(EmpMapper empMapper) {
         this.empMapper = empMapper;
@@ -40,6 +49,24 @@ public class EmpServiceImpl implements EmpService {
         // 返回 PageResult 对象
         // p.getTotal()   ：查询到的“总记录数”（不只是当前页） p.getResult() ：当前页的数据集合
         return new PageResult<Emp>(p.getTotal(), p.getResult());
+    }
+
+    @Transactional(rollbackFor = {Exception.class})
+    // 声明当前方法为事务方法 事务管理默认出现运行时异常（继承自 RuntimeException）时回滚
+    @Override
+    public void save(Emp emp) {
+        //保存员工的基本信息
+        emp.setCreateTime(LocalDateTime.now());
+        emp.setUpdateTime(LocalDateTime.now());
+        empMapper.insert(emp);
+
+        Integer empId = emp.getId();
+        //保存员工工作经历信息
+        List<EmpExpr> exprList = emp.getExprList();
+        if (!CollectionUtils.isEmpty(exprList)){// 判断集合是否为空
+            exprList.forEach(empExpr -> empExpr.setEmpId(empId));// 增强for循环，设置员工 ID
+            empExprMapper.insertBatch(exprList);
+        }
     }
 
 }
