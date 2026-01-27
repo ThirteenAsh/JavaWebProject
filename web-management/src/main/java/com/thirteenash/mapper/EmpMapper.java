@@ -4,10 +4,12 @@ package com.thirteenash.mapper;
 import com.thirteenash.pojo.Emp;
 import com.thirteenash.pojo.EmpQueryParam;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
+import java.util.Map;
 
 //员工Mapper
 @Mapper
@@ -28,10 +30,16 @@ public interface EmpMapper {
             " values (#{username}, #{name}, #{gender},#{phone},#{job},#{salary},#{image},#{entryDate},#{deptId},#{createTime},#{updateTime})")
     void insert(Emp emp);
 
-
+    //批量删除员工
     void deleteById(List<Integer> ids);
 
+    //根据id查询员工信息
     Emp getById(Integer id);
 
+    //更新员工信息
     void updateById(Emp emp);
+
+    @MapKey("pos")
+    //统计员工工作信息
+    List<Map<String, Object>> countEmpJobData();
 }

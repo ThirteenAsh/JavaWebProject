@@ -99,6 +99,7 @@
         </collection>
     </resultMap>
 
+    <!--根据ID查询员工信息-->
     <select id="getById" resultMap="empResultMap">
         select
             e.*,
@@ -110,6 +111,22 @@
             ee.job ee_job
         from emp e left join emp_expr ee on e.id = ee.emp_id
         where e.id = #{id}
+    </select>
+
+    <!--统计员工工作信息-->
+    <select id="countEmpJobData" resultType="java.util.Map">
+        SELECT
+            CASE job
+                WHEN 1 THEN '班主任'
+                WHEN 2 THEN '讲师'
+                WHEN 3 THEN '学工主管'
+                WHEN 4 THEN '教研主管'
+                WHEN 5 THEN '咨询师'
+                ELSE '其他职位'
+                END AS pos,
+            COUNT(*) AS num
+        FROM emp
+        GROUP BY job order by num;
     </select>
 
 </mapper>
