@@ -11,5 +11,5 @@ public interface EmpExprMapper {
 
     void insertBatch(List<EmpExpr> exprList);//批量保存员工工作经历
 
-    void deleteByEmpIds(List<String> empIds);
+    void deleteByEmpIds(List<Integer> empIds);
 }

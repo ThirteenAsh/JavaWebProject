@@ -13,5 +13,9 @@ public interface EmpService {
     //保存员工
     void save(Emp emp);
 
-    void delete(List<String> ids);
+    void delete(List<Integer> ids);
+
+    Emp getInfo(Integer id);
+
+    void updateById(Emp emp);
 }

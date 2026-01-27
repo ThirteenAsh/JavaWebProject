@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -73,10 +74,29 @@ public class EmpServiceImpl implements EmpService {
     @Transactional(rollbackFor = {Exception.class})// 声明当前方法为事务方法
     // 批量删除员工
     @Override
-    public void delete(List<String> ids) {
+    public void delete(List<Integer> ids) {
         //1.删除基本信息
         empMapper.deleteById(ids);
         //2.批量删除员工的工作经历信息
         empExprMapper.deleteByEmpIds(ids);
+    }
+
+    @Override
+    public Emp getInfo(Integer id) {
+        return empMapper.getById(id);
+    }
+
+    // 修改员工
+    @Transactional(rollbackFor = {Exception.class})
+    @Override
+    public void updateById(Emp emp) {
+        emp.setUpdateTime(LocalDateTime.now());
+        empMapper.updateById(emp);
+        empExprMapper.deleteByEmpIds(Arrays.asList(emp.getId()));
+        List<EmpExpr> exprList = emp.getExprList();
+        if (!CollectionUtils.isEmpty(exprList)){
+            exprList.forEach(empExpr -> empExpr.setEmpId(emp.getId()));
+            empExprMapper.insertBatch(exprList);
+        }
     }
 }
