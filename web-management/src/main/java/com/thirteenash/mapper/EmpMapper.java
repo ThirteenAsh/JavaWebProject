@@ -3,10 +3,7 @@ package com.thirteenash.mapper;
 
 import com.thirteenash.pojo.Emp;
 import com.thirteenash.pojo.EmpQueryParam;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -46,4 +43,8 @@ public interface EmpMapper {
     @MapKey("name")
     //统计员工性别信息
     List<Map<String, Object>> countEmpGenderData();
+
+    //登录
+    @Select("select id, username, name from emp where username = #{username} and password = #{password}")
+    Emp selectByUsernameAndPassword(Emp emp);
 }

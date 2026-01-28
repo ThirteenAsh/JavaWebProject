@@ -4,11 +4,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.thirteenash.mapper.EmpExprMapper;
 import com.thirteenash.mapper.EmpMapper;
-import com.thirteenash.pojo.Emp;
-import com.thirteenash.pojo.EmpExpr;
-import com.thirteenash.pojo.EmpQueryParam;
-import com.thirteenash.pojo.PageResult;
+import com.thirteenash.pojo.*;
 import com.thirteenash.service.EmpService;
+import com.thirteenash.utils.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +15,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
 public class EmpServiceImpl implements EmpService {
 
@@ -98,5 +100,23 @@ public class EmpServiceImpl implements EmpService {
             exprList.forEach(empExpr -> empExpr.setEmpId(emp.getId()));
             empExprMapper.insertBatch(exprList);
         }
+    }
+
+    @Override
+    public LoginInfo login(Emp emp) {
+        //1.调用mapper接口
+        Emp e = empMapper.selectByUsernameAndPassword(emp);
+        //2.判断是否存在员工
+        if (e != null){
+            log.info("登录成功，员工信息：{}", e);
+            //生成令牌
+            Map<String, Object> claims = new HashMap<>();//存放员工信息
+            claims.put("id", e.getId());
+            claims.put("username", e.getUsername());
+            String jwt = JwtUtils.generateJwt(claims);//生成令牌
+            return new LoginInfo(e.getId(), e.getUsername(), e.getName(), jwt);
+        }
+        //3.不存在返回null
+        return null;
     }
 }

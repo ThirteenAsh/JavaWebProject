@@ -2,6 +2,7 @@ package com.thirteenash.service;
 
 import com.thirteenash.pojo.Emp;
 import com.thirteenash.pojo.EmpQueryParam;
+import com.thirteenash.pojo.LoginInfo;
 import com.thirteenash.pojo.PageResult;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface EmpService {
     Emp getInfo(Integer id);
 
     void updateById(Emp emp);
+
+    LoginInfo login(Emp emp);
 }
