@@ -1,5 +1,6 @@
 package com.thirteenash.controller;
 
+import com.thirteenash.anno.Log;
 import com.thirteenash.pojo.Emp;
 import com.thirteenash.pojo.EmpQueryParam;
 import com.thirteenash.pojo.PageResult;
@@ -46,6 +47,7 @@ public class EmpController {
 //    }
 
     //批量删除员工
+    @Log
     @DeleteMapping
     public Result delete(@RequestParam List<Integer> ids){
         log.info("删除员工：{}", ids);
@@ -63,6 +65,7 @@ public class EmpController {
     }
 
     // 更新员工信息
+    @Log
     @PutMapping
     public Result update(@RequestBody Emp emp){
         log.info("更新员工信息：{}", emp);

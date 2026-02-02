@@ -22,7 +22,7 @@ public class UploadController {
         String originalFilename = file.getOriginalFilename();
 
         //新的文件名
-        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String extension = originalFilename.    substring(originalFilename.lastIndexOf("."));
         String newFilemName = UUID.randomUUID() + extension;
 
         //保存文件

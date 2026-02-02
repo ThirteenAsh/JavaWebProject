@@ -1,5 +1,6 @@
 package com.thirteenash.controller;
 
+import com.thirteenash.anno.Log;
 import com.thirteenash.pojo.Dept;
 import com.thirteenash.pojo.Result;
 import com.thirteenash.service.DeptService;
@@ -26,6 +27,7 @@ public class DeptController {
     }
 
     // 删除部门
+    @Log
     @DeleteMapping("/depts")
     public Result delete(Integer id){
         log.info("根据id删除部门：{}",id);
@@ -34,6 +36,7 @@ public class DeptController {
     }
 
     //新增部门
+    @Log
     @PostMapping("/depts")
     public Result add(@RequestBody Dept dept){ //@RequestBody注解作用为：将前台发送的json数据，映射为Dept对象
         log.info("新增部门: {}",dept);
@@ -50,6 +53,7 @@ public class DeptController {
     }
 
     //修改 部门
+    @Log
     @PutMapping("/depts")
     public Result update(@RequestBody Dept dept){
         log.info("修改部门：{}", dept);
