@@ -9,6 +9,7 @@ import java.util.List;
 
 //员工管理业务接口
 public interface EmpService {
+
     PageResult<Emp>  page(EmpQueryParam empQueryParam);
 
     //保存员工

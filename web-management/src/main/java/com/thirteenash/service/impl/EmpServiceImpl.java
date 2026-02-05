@@ -51,7 +51,7 @@ public class EmpServiceImpl implements EmpService {
 
         // 返回 PageResult 对象
         // p.getTotal()   ：查询到的“总记录数”（不只是当前页） p.getResult() ：当前页的数据集合
-        return new PageResult<Emp>(p.getTotal(), p.getResult());
+        return new PageResult<>(p.getTotal(), p.getResult());
     }
 
     @Transactional(rollbackFor = {Exception.class})

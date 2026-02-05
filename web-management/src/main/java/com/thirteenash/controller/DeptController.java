@@ -22,7 +22,7 @@ public class DeptController {
     @GetMapping("/depts")
     public Result list(){
         log.info("查询全部的部门数据");
-        List< Dept > deptList = deptService.findAll(); //封装 数据
+        List<Dept> deptList = deptService.findAll(); //封装 数据
         return Result.success(deptList);
     }
 
