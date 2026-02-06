@@ -13,4 +13,14 @@ public interface ClazzService {
 
     //查询所有班级信息
     List<Clazz> findAll();
+
+    void deleteById(Integer id);
+
+    void add(Clazz clazz);
+
+    //根据ID查询班级
+    Clazz getById(Integer id);
+
+    //修改班级信息
+    void update(Clazz clazz);
 }

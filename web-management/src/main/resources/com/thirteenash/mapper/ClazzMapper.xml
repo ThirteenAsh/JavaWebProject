@@ -4,6 +4,63 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.thirteenash.mapper.ClazzMapper">
+    <insert id="add" parameterType="com.thirteenash.pojo.Clazz">
+        INSERT INTO clazz (name, room, begin_date, end_date, master_id, subject)
+        VALUES (#{name}, #{room}, #{beginDate}, #{endDate}, #{masterId}, #{subject})
+    </insert>
+    <delete id="deleteById">
+        DELETE FROM clazz WHERE id = #{id}
+    </delete>
+
+    <!--根据ID查询班级信息-->
+    <select id="getById" resultType="com.thirteenash.pojo.Clazz">
+        SELECT
+        c.id,
+        c.name,
+        c.room,
+        c.begin_date,
+        c.end_date,
+        c.master_id,
+        c.subject,
+        c.create_time,
+        c.update_time,
+        e.name as masterName,
+        CASE 
+            WHEN c.begin_date &gt; NOW() THEN '未开班'
+            WHEN c.end_date &lt; NOW() THEN '已结课'
+            ELSE '在读'
+        END as status
+        FROM clazz c
+        LEFT JOIN emp e ON c.master_id = e.id
+        WHERE c.id = #{id}
+    </select>
+
+    <!--修改班级信息-->
+    <update id="update" parameterType="com.thirteenash.pojo.Clazz">
+        UPDATE clazz
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="room != null and room != ''">
+                room = #{room},
+            </if>
+            <if test="beginDate != null">
+                begin_date = #{beginDate},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+            <if test="masterId != null">
+                master_id = #{masterId},
+            </if>
+            <if test="subject != null">
+                subject = #{subject},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
     <select id="list" resultType="com.thirteenash.pojo.Clazz">
         SELECT
         c.id,

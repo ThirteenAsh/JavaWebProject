@@ -119,4 +119,10 @@ public class EmpServiceImpl implements EmpService {
         //3.不存在返回null
         return null;
     }
+
+    @Override
+    public List<Emp> findAll() {
+        log.info("查询所有员工信息");
+        return empMapper.findAll();
+    }
 }

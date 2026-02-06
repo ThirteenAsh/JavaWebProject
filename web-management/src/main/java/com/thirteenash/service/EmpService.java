@@ -22,4 +22,7 @@ public interface EmpService {
     void updateById(Emp emp);
 
     LoginInfo login(Emp emp);
+
+    //查询所有员工
+    List<Emp> findAll();
 }
