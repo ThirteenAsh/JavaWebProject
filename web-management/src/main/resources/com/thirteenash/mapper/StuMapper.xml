@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thirteenash.mapper.StuMapper">
+    
+    <select id="findAll" resultType="com.thirteenash.pojo.Student">
+        SELECT
+        s.id,
+        s.name,
+        s.no,
+        s.gender,
+        s.phone,
+        s.id_card,
+        s.is_college,
+        s.address,
+        s.degree,
+        s.graduation_date,
+        s.clazz_id,
+        s.violation_count,
+        s.violation_score,
+        s.create_time,
+        s.update_time,
+        c.name as clazzName
+        FROM student s
+        LEFT JOIN clazz c ON s.clazz_id = c.id
+        <where>
+            <!-- 学生姓名（模糊查询） -->
+            <if test="name != null and name != ''">
+                AND s.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            
+            <!-- 学历 -->
+            <if test="degree != null">
+                AND s.degree = #{degree}
+            </if>
+            
+            <!-- 班级名称（模糊查询） -->
+            <if test="clazzName != null and clazzName != ''">
+                AND c.name LIKE CONCAT('%', #{clazzName}, '%')
+            </if>
+        </where>
+        ORDER BY s.update_time DESC
+    </select>
+
+    <!--批量删除学员-->
+    <delete id="deleteByIds">
+        DELETE FROM student WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--添加学员-->
+    <insert id="insert" parameterType="com.thirteenash.pojo.Student">
+        INSERT INTO student (
+            name, no, gender, phone, id_card, is_college, 
+            address, degree, graduation_date, clazz_id,
+            violation_count, violation_score, create_time, update_time
+        ) VALUES (
+            #{name}, #{no}, #{gender}, #{phone}, #{idCard}, #{isCollege},
+            #{address}, #{degree}, #{graduationDate}, #{clazzId},
+            0, 0, NOW(), NOW()
+        )
+    </insert>
+
+    <!--根据ID查询学员信息-->
+    <select id="getById" resultType="com.thirteenash.pojo.Student">
+        SELECT
+        s.id,
+        s.name,
+        s.no,
+        s.gender,
+        s.phone,
+        s.id_card,
+        s.is_college,
+        s.address,
+        s.degree,
+        s.graduation_date,
+        s.clazz_id,
+        s.violation_count,
+        s.violation_score,
+        s.create_time,
+        s.update_time,
+        c.name as clazzName
+        FROM student s
+        LEFT JOIN clazz c ON s.clazz_id = c.id
+        WHERE s.id = #{id}
+    </select>
+
+    <!--修改学员信息-->
+    <update id="update" parameterType="com.thirteenash.pojo.Student">
+        UPDATE student
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="no != null and no != ''">
+                no = #{no},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="idCard != null and idCard != ''">
+                id_card = #{idCard},
+            </if>
+            <if test="isCollege != null">
+                is_college = #{isCollege},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="degree != null">
+                degree = #{degree},
+            </if>
+            <if test="graduationDate != null">
+                graduation_date = #{graduationDate},
+            </if>
+            <if test="violationCount != null">
+                violation_count = #{violationCount},
+            </if>
+            <if test="violationScore != null">
+                violation_score = #{violationScore},
+            </if>
+            <if test="clazzId != null">
+                clazz_id = #{clazzId},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>
