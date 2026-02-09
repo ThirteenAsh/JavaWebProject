@@ -88,6 +88,36 @@
         LEFT JOIN clazz c ON s.clazz_id = c.id
         WHERE s.id = #{id}
     </select>
+    
+    <!-- 查询学员学历分布数据 -->
+    <select id="getStudentDegreeData" resultType="java.util.Map">
+        SELECT
+        CASE s.degree
+            WHEN 1 THEN '初中'
+            WHEN 2 THEN '高中'
+            WHEN 3 THEN '大专'
+            WHEN 4 THEN '本科'
+            WHEN 5 THEN '硕士'
+            WHEN 6 THEN '博士'
+        END as name,
+        COUNT(*) as value
+        FROM student s
+        WHERE s.degree IS NOT NULL
+        GROUP BY s.degree
+    </select>
+
+    <!-- 查询学员班级分布数据 -->
+    <select id="getStudentCountData" resultType="java.util.Map">
+        SELECT 
+            c.name as clazz,
+            COUNT(s.id) as value
+        FROM clazz c
+        LEFT JOIN student s ON c.id = s.clazz_id
+        WHERE c.id IS NOT NULL
+        GROUP BY c.id, c.name
+        ORDER BY c.name
+    </select>
+
 
     <!--修改学员信息-->
     <update id="update" parameterType="com.thirteenash.pojo.Student">
@@ -131,6 +161,15 @@
             </if>
             update_time = NOW()
         </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 增加学员违规次数和违规分数 -->
+    <update id="violation">
+        UPDATE student 
+        SET violation_count = violation_count + 1,
+            violation_score = violation_score + #{score},
+            update_time = NOW()
         WHERE id = #{id}
     </update>
 </mapper>

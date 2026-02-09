@@ -20,4 +20,6 @@ public interface StuService {
 
     //修改学员信息
     void update(Student student);
+
+    void violation(Integer id, Integer score);
 }

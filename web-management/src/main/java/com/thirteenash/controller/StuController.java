@@ -1,5 +1,6 @@
 package com.thirteenash.controller;
 
+import com.thirteenash.anno.Log;
 import com.thirteenash.pojo.PageResult;
 import com.thirteenash.pojo.Result;
 import com.thirteenash.pojo.StuQueryParam;
@@ -27,6 +28,7 @@ public class StuController {
     }
 
     //批量删除学员
+    @Log
     @DeleteMapping("/students/{ids}")
     public Result deleteByIds(@PathVariable List<Integer> ids){
         log.info("批量删除学员：{}", ids);
@@ -35,6 +37,7 @@ public class StuController {
     }
 
     //添加学员
+    @Log
     @PostMapping("/students")
     public Result save(@RequestBody Student student){
         log.info("添加学员：{}", student);
@@ -51,10 +54,20 @@ public class StuController {
     }
 
     //修改学员信息
+    @Log
     @PutMapping("/students")
     public Result update(@RequestBody Student student){
         log.info("修改学员信息: {}", student);
         stuService.update(student);
+        return Result.success();
+    }
+
+    //违纪处理
+    @Log
+    @PutMapping("/students/violation/{id}/{score}")
+    public Result violation(@PathVariable Integer id, @PathVariable Integer score){
+        log.info("违纪处理: id={}, score={}", id, score);
+        stuService.violation(id, score);
         return Result.success();
     }
 }

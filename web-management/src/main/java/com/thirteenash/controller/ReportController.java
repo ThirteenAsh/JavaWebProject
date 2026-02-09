@@ -2,6 +2,7 @@ package com.thirteenash.controller;
 
 import com.thirteenash.pojo.JobOption;
 import com.thirteenash.pojo.Result;
+import com.thirteenash.pojo.StuOption;
 import com.thirteenash.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,20 @@ public class ReportController {
         log.info("统计员工性别");
         List<Map<String, Object>> genderlist = reportService.getEmpGenderData();
         return Result.success(genderlist);
+    }
+
+    //班级学员学历统计
+    @GetMapping("/studentDegreeData")
+    public Result getStudentDegreeData(){
+        log.info("班级学员学历统计");
+        List<Map<String, Object>> degreeList = reportService.getStudentDegreeData();
+        return Result.success(degreeList);
+    }
+
+    @GetMapping("/studentCountData")
+    public Result getStudentCountData(){
+        log.info("班级学员数量统计");
+        StuOption stuOption = reportService.getStudentCountData();
+        return Result.success(stuOption);
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thirteenash.mapper.LogMapper">
+
+    <select id="page" resultType="com.thirteenash.pojo.OperateLog">
+        SELECT 
+            ol.id,
+            ol.operate_emp_id as operateEmpId,
+            ol.operate_time as operateTime,
+            ol.class_name as className,
+            ol.method_name as methodName,
+            ol.method_params as methodParams,
+            ol.return_value as returnValue,
+            ol.cost_time as costTime,
+            e.name as operateEmpName
+            
+        FROM operate_log ol
+        LEFT JOIN emp e ON ol.operate_emp_id = e.id
+        ORDER BY ol.operate_time DESC
+    </select>
+    
+</mapper>

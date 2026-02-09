@@ -1,5 +1,6 @@
 package com.thirteenash.controller;
 
+import com.thirteenash.anno.Log;
 import com.thirteenash.pojo.Clazz;
 import com.thirteenash.pojo.ClazzQueryParam;
 import com.thirteenash.pojo.PageResult;
@@ -34,6 +35,7 @@ public class ClazzController {
     }
 
     //删除班级
+    @Log
     @DeleteMapping("/clazzs/{id}")
     public Result deleteById(@PathVariable Integer id){
         log.info("删除了id为{}的班级", id);
@@ -42,6 +44,7 @@ public class ClazzController {
     }
 
     //添加班级
+    @Log
     @PostMapping("/clazzs")
     public Result addClazz(@RequestBody Clazz clazz){
         log.info("添加班级：{}", clazz);
@@ -58,6 +61,7 @@ public class ClazzController {
     }
 
     //修改班级信息
+    @Log
     @PutMapping("/clazzs")
     public Result update(@RequestBody Clazz clazz){
         log.info("修改班级信息: {}", clazz);

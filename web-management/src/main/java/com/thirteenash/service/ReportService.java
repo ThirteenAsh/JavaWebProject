@@ -1,6 +1,7 @@
 package com.thirteenash.service;
 
 import com.thirteenash.pojo.JobOption;
+import com.thirteenash.pojo.StuOption;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,4 +13,8 @@ public interface ReportService {
     JobOption getEmpJobData();
 
     List<Map<String, Object>> getEmpGenderData();
+
+    List<Map<String, Object>> getStudentDegreeData();
+
+    StuOption getStudentCountData();
 }

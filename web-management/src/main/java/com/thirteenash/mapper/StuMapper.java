@@ -2,9 +2,11 @@ package com.thirteenash.mapper;
 
 import com.thirteenash.pojo.StuQueryParam;
 import com.thirteenash.pojo.Student;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface StuMapper {
@@ -22,4 +24,12 @@ public interface StuMapper {
 
     //修改学员信息
     void update(Student student);
+
+    void violation(Integer id, Integer score);
+
+    @MapKey("degree")
+    List<Map<String, Object>> getStudentDegreeData();
+
+    @MapKey("clazz")
+    List<Map<String, Object>> getStudentCountData();
 }

@@ -128,6 +128,7 @@
         FROM emp
         GROUP BY job order by num;
     </select>
+
     <select id="countEmpGenderData" resultType="java.util.Map">
         SELECT
             if(gender = 1, '男性员工', '女性员工') name,

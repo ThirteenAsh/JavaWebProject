@@ -59,4 +59,9 @@ public class StuServiceImpl implements StuService {
         student.setUpdateTime(LocalDateTime.now());
         stuMapper.update(student);
     }
+
+    @Override
+    public void violation(Integer id, Integer score) {
+        stuMapper.violation(id, score);
+    }
 }
